@@ -1,0 +1,23 @@
+﻿@model TTDN.Models.Payment
+@{
+    ViewData["Title"] = "Thanh Toán";
+}
+
+<h2>Thanh Toán</h2>
+<p><strong>Mã Đặt Sân:</strong> @Model.BookingId</p>
+<p><strong>Ngày Thanh Toán:</strong> @Model.PaymentDate?.ToString("dd/MM/yyyy HH:mm")</p>
+<p><strong>Tổng Tiền:</strong> @Model.Amount.ToString("N0") đồng </p>
+
+<form method="post" action="@Url.Action("ProcessPayment", "Payment")">
+    <input type="hidden" name="bookingId" value="@Model.BookingId" />
+    <input type="hidden" name="amount" value="@Model.Amount" />
+
+    <label>Phương thức thanh toán:</label>
+    <select name="method" class="form-control">
+        <option value="credit_card">Thẻ tín dụng</option>
+        <option value="cash">Tiền mặt</option>
+        <option value="paypal">PayPal</option>
+    </select>
+
+    <button type="submit" class="btn btn-success mt-3">Thanh Toán</button>
+</form>

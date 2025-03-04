@@ -1,0 +1,42 @@
+﻿@model TTDN.Models.Account
+
+@{
+    ViewData["Title"] = "Thêm khách hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-2xl font-bold mb-4">Thêm khách hàng</h2>
+
+<!-- Hiển thị thông báo lỗi nếu có -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Tên tài khoản:</label>
+        <input type="text" class="form-control" asp-for="Username" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Mật khẩu:</label>
+        <input type="password" class="form-control" asp-for="Password" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email:</label>
+        <input type="email" class="form-control" asp-for="Email" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Số điện thoại:</label>
+        <input type="text" class="form-control" asp-for="phone" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Thêm khách hàng</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
+

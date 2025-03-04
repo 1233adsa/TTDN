@@ -1,0 +1,95 @@
+﻿@model IEnumerable<TTDN.Models.Booking>
+
+@{
+    ViewData["Title"] = "Quản lý Đơn Đặt Sân";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    DateTime selectedDate = ViewBag.SelectedDate ?? DateTime.Today;
+}
+
+<h2 class="text-center font-bold text-primary my-4">Quản lý đơn đặt sân</h2>
+<!-- Chọn ngày để xem đơn đặt sân -->
+<form method="get" class="d-flex justify-content-center mb-4">
+    <label for="selectedDate" class="me-2 align-self-center fw-bold">Chọn ngày:</label>
+    <input type="date" id="selectedDate" name="selectedDate" value="@selectedDate.ToString("yyyy-MM-dd")" class="form-control w-auto" />
+    <button type="submit" class="btn btn-primary ms-2"><i class="fas fa-calendar-check"></i> Xem</button>
+</form>
+
+<!-- Kiểm tra nếu không có đơn đặt sân -->
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">Không có đơn đặt sân nào trong ngày này.</div>
+}
+else
+{
+    <!-- Hiển thị danh sách đơn đặt sân -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Sân</th>
+                    <th>Ngày</th>
+                    <th>Giờ bắt đầu</th>
+                    <th>Giờ kết thúc</th>
+                    <th>Giá</th>
+                    <th>Tiền cọc</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td>@booking.BookingId</td>
+                        <td>@booking.Account?.Username</td>
+                        <td>@booking.Field?.FieldName</td>
+                        <td>@booking.BookingDate.ToString("dd/MM/yyyy")</td>
+                        <td>@booking.StartTime</td>
+                        <td>@booking.EndTime</td>
+                        <td class="text-success fw-bold">@booking.TotalPrice.ToString("N0") đồng</td>
+                        <td class="text-success fw-bold">@booking.DepositAmount.ToString("N0") đồng</td>
+                        <td>
+                            @if (booking.Status == "confirmed")
+                            {
+                                <span class="badge bg-success">Đã xác nhận</span>
+                            }
+                            else if (booking.Status == "cancelled")
+                            {
+                                <span class="badge bg-secondary">Đã hủy</span>
+                            }
+                            else if(booking.Status == "refunding")
+                            {
+                                <span class="badge bg-secondary">Đã hủy, chưa hoàn tiền</span>
+                            }
+                            else if(booking.Status == "refunded")
+                            {
+                                <span class="badge bg-secondary">Đã hủy, đã hoàn tiền</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Chưa xác nhận</span>
+                            }
+                        </td>
+                        <td>
+                            @if (booking.Status == "pending")
+                            {
+                                <form method="post" asp-action="ConfirmPayment" asp-route-bookingId="@booking.BookingId">
+                                    <button type="submit" class="btn btn-success">Xác nhận thanh toán</button>
+                                </form>
+                            }
+                            else if (booking.Status == "refunding" && booking.DepositAmount > 0)
+                            {
+                                <p class="text-danger">Cần hoàn tiền đặt cọc: @booking.DepositAmount.ToString("N0") đồng</p>
+                                <form method="post" asp-action="ConfirmRefund" asp-route-bookingId="@booking.BookingId">
+                                    <button type="submit" class="btn btn-warning">Xác nhận hoàn tiền</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

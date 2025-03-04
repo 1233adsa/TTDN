@@ -1,0 +1,55 @@
+﻿@model TTDN.Models.Booking
+
+@{
+    ViewData["Title"] = "Xác nhận đặt sân";
+}
+
+<h2 class="text-center text-primary my-4">Xác nhận đặt sân</h2>
+
+<div class="container p-4 border rounded shadow-sm bg-light">
+    <h4>Thông tin đặt sân</h4>
+    <table class="table table-bordered">
+        <tr>
+            <th>Sân</th>
+            <td>@Model.Field?.FieldName</td>
+        </tr>
+        <tr>
+            <th>Ngày đặt</th>
+            <td>@Model.BookingDate.ToString("dd/MM/yyyy")</td>
+        </tr>
+        <tr>
+            <th>Giờ bắt đầu</th>
+            <td>@Model.StartTime</td>
+        </tr>
+        <tr>
+            <th>Giờ kết thúc</th>
+            <td>@Model.EndTime</td>
+        </tr>
+        <tr>
+            <th>Giá</th>
+            <td class="text-success fw-bold">@Model.TotalPrice.ToString("N0") đồng</td>
+        </tr>
+        <tr>
+            <th>Tiền đặt cọc</th>
+            <td class="text-warning fw-bold">@Model.DepositAmount.ToString("N0") đồng</td>
+        </tr>
+    </table>
+
+    <form method="post" asp-action="BookField">
+        @Html.HiddenFor(m => m.FieldId)
+        @Html.HiddenFor(m => m.BookingDate)
+        @Html.HiddenFor(m => m.StartTime)
+        @Html.HiddenFor(m => m.EndTime)
+        @Html.HiddenFor(m => m.TotalPrice)
+        @Html.HiddenFor(m => m.DepositAmount)
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-success px-4">
+                <i class="fas fa-check-circle"></i> Xác nhận đặt sân
+            </button>
+            <a asp-action="Index" class="btn btn-danger px-4">
+                <i class="fas fa-times-circle"></i> Hủy
+            </a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,98 @@
+﻿@model List<TTDN.Models.Booking>
+
+@{
+    ViewData["Title"] = "Sân đã đặt";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center text-primary mb-4">Danh sách sân đã đặt</h2>
+
+    <div class="card shadow p-4 mb-4">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="dateFilter" class="form-label fw-bold">Chọn ngày:</label>
+                <input type="date" id="dateFilter" name="dateFilter" class="form-control" value="@Context.Request.Query["dateFilter"]" />
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Lọc</button>
+            </div>
+        </form>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">@TempData["Error"]</div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-warning text-center">Không có sân đã đặt</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Tên sân</th>
+                        <th>Ngày đặt</th>
+                        <th>Giờ bắt đầu</th>
+                        <th>Giờ kết thúc</th>
+                        <th>Giá</th>
+                        <th>Đặt cọc</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model)
+                    {
+                        <tr>
+                            <td>@booking.Field?.FieldName</td>
+                            <td>@booking.BookingDate.ToString("dd/MM/yyyy")</td>
+                            <td>@booking.StartTime</td>
+                            <td>@booking.EndTime</td>
+                            <td>@booking.TotalPrice.ToString("N0") đồng</td>
+                            <td>@booking.DepositAmount.ToString("N0") đồng</td>
+                            <td>
+                                @if (booking.Status == "confirmed")
+                                {
+                                    <span class="badge bg-success">Đã xác nhận</span>
+                                }
+                                else if (booking.Status == "cancelled")
+                                {
+                                    <span class="badge bg-danger">Đã hủy</span>
+                                }
+                                else if (booking.Status == "refunding")
+                                {
+                                    <span class="badge bg-warning text-dark">Đã hủy, chưa hoàn tiền</span>
+                                }
+                                else if (booking.Status == "refunded")
+                                {
+                                    <span class="badge bg-secondary">Đã hủy, đã hoàn tiền</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">Chưa xác nhận</span>
+                                }
+                            </td>
+                            <td>
+                                @if (booking.BookingDate >= DateTime.Today && (booking.Status == "pending" || booking.Status == "confirmed"))
+                                {
+                                    <form asp-action="Cancel" asp-controller="Booking" method="post" style="display:inline;">
+                                        <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn hủy đặt sân này không? Bạn sẽ mất tiền cọc nếu hủy sân muộn hơn 3 ngày trước ngày thi đấu?');">Hủy</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

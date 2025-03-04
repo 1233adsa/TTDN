@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
+        <div class="text-center">
+            <h2 class="mb-4 text-success">Đăng nhập</h2>
+        </div>
+
+        <!-- Form đăng nhập -->
+        <form method="post">
+            <div class="mb-3">
+                <label for="Username" class="form-label">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" id="Username" name="username" class="form-control" required placeholder="Nhập tên đăng nhập">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="Password" class="form-label">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="Password" name="password" class="form-control" required placeholder="Nhập mật khẩu">
+                </div>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success btn-lg">Đăng nhập</button>
+            </div>
+        </form>
+
+        <!-- Thông báo thành công -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success mt-3">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <!-- Thông báo lỗi -->
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger mt-3">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <div class="text-center mt-3">
+            <p>Chưa có tài khoản? <a href="@Url.Action("Register", "Account")" class="text-success fw-bold">Đăng ký ngay</a></p>
+        </div>
+    </div>
+</div>

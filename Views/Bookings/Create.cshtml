@@ -1,0 +1,71 @@
+﻿@model Booking
+@{
+    ViewData["Title"] = "Đặt sân";
+}
+
+<h2>Đặt sân</h2>
+<form asp-action="BookField" method="post">
+    <label>Ngày đặt:</label>
+    <input type="date" id="bookingDate" name="BookingDate" required />
+
+    <button type="button" id="viewSchedule">Xem khung giờ trống</button>
+
+    <table id="scheduleTable" border="1" style="display: none;">
+        <thead>
+            <tr>
+                <th>Giờ bắt đầu</th>
+                <th>Giờ kết thúc</th>
+                <th>Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <label>Chọn sân:</label>
+    <select id="fieldId" name="FieldId">
+        <option value="1">Sân 1</option>
+        <option value="2">Sân 2</option>
+    </select>
+
+    <label>Đặt từ:</label>
+    <input type="time" id="startTime" name="StartTime" required />
+
+    <label>Đến:</label>
+    <input type="time" id="endTime" name="EndTime" required />
+
+    <button type="button" id="checkAvailability">Kiểm tra</button>
+    <button type="submit">Đặt sân</button>
+</form>
+
+<script>
+    document.getElementById("viewSchedule").addEventListener("click", function() {
+        let bookingDate = document.getElementById("bookingDate").value;
+        let fieldId = document.getElementById("fieldId").value;
+
+        fetch("/Bookings/GetAvailableSchedules", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ bookingDate, fieldId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            let table = document.getElementById("scheduleTable");
+            let tbody = table.getElementsByTagName("tbody")[0];
+            tbody.innerHTML = "";
+
+            if (data.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='3'>Không có lịch trình nào!</td></tr>";
+            } else {
+                data.forEach(schedule => {
+                    let row = `<tr>
+                        <td>${schedule.StartTime}</td>
+                        <td>${schedule.EndTime}</td>
+                        <td>${schedule.Status}</td>
+                    </tr>`;
+                    tbody.innerHTML += row;
+                });
+            }
+            table.style.display = "block";
+        });
+    });
+</script>

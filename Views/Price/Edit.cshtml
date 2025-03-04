@@ -1,0 +1,40 @@
+﻿@model TTDN.Models.Price
+
+@{
+    ViewData["Title"] = "Chỉnh sửa giá sân";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-2xl font-bold mb-4">Chỉnh sửa giá sân</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="PriceId" />
+    <input type="hidden" asp-for="FieldId" />
+    <input type="hidden" asp-for="StartTime" />
+    <input type="hidden" asp-for="EndTime" />
+
+    <div class="mb-3">
+        <label class="form-label">Tên sân:</label>
+        <input type="text" class="form-control" value="@Model.Field.FieldName" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Giờ bắt đầu:</label>
+        <input type="text" class="form-control" value="@Model.StartTime" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Giờ kết thúc:</label>
+        <input type="text" class="form-control" value="@Model.EndTime" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Giá:</label>
+        <input type="number" class="form-control" asp-for="Price1" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
+

@@ -1,0 +1,84 @@
+﻿@model List<TTDN.Models.Field>
+
+@{
+    ViewData["Title"] = "Quản lý sân bóng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-center font-bold text-primary my-4">Quản lý sân bóng</h2>
+
+<!-- Hiển thị thông báo -->
+<div id="alertMessage" class="alert d-none"></div>
+
+<!-- Nút thêm sân -->
+<a asp-action="Create" class="btn btn-primary mb-3">Thêm sân mới</a>
+
+<!-- Bảng danh sách sân -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên sân</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="fieldTableBody">
+        @foreach (var field in Model)
+        {
+            <tr id="row-@field.FieldId">
+                <td>@field.FieldName</td>
+                <td>
+                    @if(field.Status == "Active")
+                    {
+                        <span>Hoạt động</span>
+                    }
+                    else
+                    {
+                        <span>Bảo trì</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@field.FieldId" class="btn btn-warning">Sửa</a>
+                    <button class="btn btn-danger delete-button" data-id="@field.FieldId">Xóa</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Script xử lý xóa -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".delete-button").forEach(button => {
+            button.addEventListener("click", function () {
+                let fieldId = this.getAttribute("data-id");
+
+                if (!confirm("Bạn có chắc muốn xóa sân này không?")) return;
+
+                fetch(`/Admin/Field/Delete/${fieldId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById(`row-${fieldId}`).remove();
+                            showAlert("success", data.message);
+                        } else {
+                            showAlert("danger", data.message);
+                        }
+                    })
+                    .catch(() => showAlert("danger", "Có lỗi xảy ra, vui lòng thử lại!"));
+            });
+        });
+    });
+
+    function showAlert(type, message) {
+        const alertDiv = document.getElementById("alertMessage");
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.innerHTML = message;
+        alertDiv.classList.remove("d-none");
+
+        setTimeout(() => alertDiv.classList.add("d-none"), 3000);
+    }
+</script>

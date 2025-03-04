@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sân bóng Đầm Hồng</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <style>
+        /* Header với ảnh nền */
+        .header-image {
+            background: url('/images/bg3.jpg') no-repeat center center;
+            background-size: cover;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Tiêu đề thể thao */
+        .header-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            font-style: italic;
+            text-align: center;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        /* Icon bóng đá */
+        .soccer-icon {
+            font-size: 3rem;
+            margin-right: 10px;
+            color: yellow;
+            animation: bounce 1.5s infinite;
+        }
+        /* Account icon */
+        .account-icon {
+            margin-right: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #2c6e49;
+            color: white;
+            padding: 20px;
+            text-align: right;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .footer p {
+            margin: 5px 0;
+            font-size: 1rem;
+        }
+        .footer i {
+            margin-right: 8px;
+            color: #ffd700;
+        }
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Đảm bảo footer không đè lên nội dung */
+        html, body {
+            height: 100%;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .main-content {
+            flex: 1;
+        }
+    </style>
+</head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let navbar = document.querySelector(".navbar-custom");
+
+        window.addEventListener("scroll", function () {
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        });
+    });
+</script>
+<script>
+    function navigateToSection(event, sectionId) {
+        event.preventDefault();
+        if (window.location.pathname === '/' || window.location.pathname.toLowerCase().includes('home/index')) {
+            // Nếu đang ở trang chủ, cuộn thẳng đến section
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        } else {
+            // Nếu đang ở trang khác, điều hướng về trang chủ với hash
+            window.location.href = '/' + '#' + sectionId;
+        }
+    }
+
+    // Kiểm tra nếu có hash trên URL, cuộn đến section tương ứng
+    window.onload = function () {
+        if (window.location.hash) {
+            let section = document.querySelector(window.location.hash);
+            if (section) {
+                setTimeout(() => {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }, 500);
+            }
+        }
+    };
+</script>
+
+<body>
+    <div class="wrapper">
+        <!-- Header -->
+        <div class="header-image">
+            <h1 class="header-text">
+                <i class="fas fa-futbol soccer-icon"></i> Sân bóng Đầm Hồng - Thỏa mãn đam mê
+            </h1>
+        </div>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-custom shadow-sm fixed-top">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">Trang chủ</a>
+
+                <!-- Button Toggle trên mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar chính -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <!-- Nếu đang ở trang chủ, nhảy tới section; nếu không, trở về trang chủ rồi nhảy -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#info" onclick="navigateToSection(event, 'info')">Sân Thi Đấu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pricing" onclick="navigateToSection(event, 'pricing')">Bảng Giá</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#guide" onclick="navigateToSection(event, 'guide')">Hướng Dẫn</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#policy" onclick="navigateToSection(event, 'policy')">Chính Sách</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="FieldSchedule" asp-action="Index">Lịch sân</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Booking" asp-action="Index">Sân đã đặt</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tài khoản -->
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-circle account-icon"></i> @User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Edit">Tài khoản</a></li>
+                                    <li>
+                                        <form asp-controller="Account" asp-action="Logout" method="post">
+                                            <button type="submit" class="dropdown-item">Đăng xuất</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                    <i class="fas fa-user-circle account-icon"></i> Đăng nhập
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- Nội dung chính -->
+        <div class="container main-content">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container text-lg-start">
+                <h5 class="footer-title">Sân bóng Đầm Hồng</h5>
+                <p><i class="fas fa-map-marker-alt"></i> Khương Đình, Thanh Xuân, Hà Nội</p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:sanbongdamhong@gmail.com">sanbongdamhong@gmail.com</a></p>
+                <p><i class="fas fa-phone"></i> <a href="tel:0333493605">0333493605</a></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

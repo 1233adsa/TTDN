@@ -1,0 +1,69 @@
+﻿@model TTDN.Models.Account
+
+@{
+    ViewData["Title"] = "Chỉnh sửa tài khoản";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Tài khoản</h4>
+                </div>
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                    }
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                    }
+
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" name="accountId" value="@Model.AccountId" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Tên tài khoản</label>
+                            <input type="text" class="form-control" value="@Model.Username" disabled />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" value="@Model.Email" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input type="text" name="phone" class="form-control" value="@Model.phone" required />
+                        </div>
+
+                        <hr />
+
+                        <h5 class="text-center">Thay đổi mật khẩu (Không bắt buộc)</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label">Mật khẩu cũ</label>
+                            <input type="password" name="oldPassword" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Mật khẩu mới</label>
+                            <input type="password" name="newPassword" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Nhập lại mật khẩu mới</label>
+                            <input type="password" name="confirmPassword" class="form-control" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

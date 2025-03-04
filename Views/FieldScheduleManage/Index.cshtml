@@ -1,0 +1,122 @@
+﻿@model IEnumerable<TTDN.Models.FieldSchedule>
+
+@{
+    ViewData["Title"] = "Quản lý lịch sân";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-center font-bold text-primary my-4">Quản lý lịch sân</h2>
+
+@if (TempData["SuccessMessage"] != null)
+
+{
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+
+{
+    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Thanh tìm kiếm -->
+<div class="container p-3 border rounded shadow-sm bg-light mb-4">
+    <form method="get" class="row g-3">
+        <div class="col-md-3">
+            <label for="fieldId" class="form-label fw-bold">Sân:</label>
+            <select id="fieldId" name="fieldId" class="form-select">
+                <option value="">Tất cả</option>
+                @foreach (var field in ViewBag.Fields)
+
+                {
+                    <option value="@field.FieldId">@field.FieldName</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="selectedDate" class="form-label fw-bold">Ngày đặt sân:</label>
+            <input type="date" id="selectedDate" name="selectedDate" value="@ViewBag.SelectedDate?.ToString("yyyy-MM-dd")" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="status" class="form-label fw-bold">Trạng thái:</label>
+            <select id="status" name="status" class="form-select">
+                <option value="">Tất cả</option>
+                <option value="available">Còn trống</option>
+                <option value="booked">Đã đặt</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-search"></i> Tìm kiếm
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Nút thêm mới lịch sân -->
+<div class="text-end mb-3">
+    <a asp-action="Create" class="btn btn-success"><i class="fas fa-plus"></i> Thêm lịch sân</a>
+</div>
+
+@if (!Model.Any())
+
+{
+    <div class="alert alert-warning text-center">Chưa có lịch sân cho ngày này.</div>
+}
+
+else
+
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Sân</th>
+                    <th>Ngày</th>
+                    <th>Giờ Bắt Đầu</th>
+                    <th>Giờ Kết Thúc</th>
+                    <th>Trạng Thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var schedule in Model)
+
+                {
+                    <tr>
+                        <td class="fw-bold">@schedule.Field?.FieldName </td>
+                        <td>@schedule.BookingDate.ToString("dd/MM/yyyy")</td>
+                        <td>@schedule.StartTime.ToString("HH:mm")</td>
+                        <td>@schedule.EndTime.ToString("HH:mm")</td>
+                        <td>
+                            @if (schedule.Status == "available")
+                            {
+                                <span class="badge bg-success">Còn trống</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Đã đặt</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@schedule.ScheduleId" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+                            <form asp-action="Delete" asp-route-id="@schedule.ScheduleId" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa lịch sân này?');">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

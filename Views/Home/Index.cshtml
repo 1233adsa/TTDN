@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ - Đặt sân bóng đá";
+    <link rel="stylesheet" href="~/css/site.css" />
+}
+<!--Nav-->
+
+<!-- Banner -->
+<div class="jumbotron text-center text-success py-5 shadow-lg rounded-3 custom-banner">
+    <h1 class="display-4 fw-bold animate-title">⚽ Chào mừng đến với Hệ thống Đặt sân Đầm Hồng</h1>
+    <p class="lead animate-text">Nhanh chóng - Tiện lợi - Giá hợp lý</p>
+    <a href="@Url.Action("Index", "FieldSchedule")" class="btn btn-success btn-lg fw-bold shadow animate-button">
+        Đặt sân ngay <i class="fas fa-futbol ms-2"></i>
+    </a>
+</div>
+
+<!-- Thông tin sân thi đấu -->
+<section id="info" class="container my-5">
+    <h2 class="text-center text-primary">Thông tin sân thi đấu</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <img src="/images/san_1.jpg" class="card-img-top" alt="Sân A">
+                <div class="card-body">
+                    <p class="card-text">Đạt tiêu chuẩn sân thi đấu 7 người, mặt cỏ nhân tạo chất lượng cao.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow">
+                <img src="~/images/san_2.jpg" class="card-img-top" alt="Sân B">
+                <div class="card-body">
+                    <p class="card-text">Không gian rộng rãi, có khu vực nghỉ ngơi, bãi đậu xe miễn phí.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow">
+                <img src="/images/san_3.jpg" class="card-img-top" alt="Sân C">
+                <div class="card-body">
+                    <p class="card-text">Trang bị hệ thống đèn chiếu sáng tiêu chuẩn với các trận đấu ban đêm.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Bảng giá -->
+<section id="pricing" class="container my-5">
+    <h2 class="text-center text-primary fw-bold mb-4">💰 Bảng giá sân</h2>
+    <table class="table table-striped table-hover text-center shadow-sm">
+        <thead class="table-dark text-white">
+            <tr>
+                <th>⚽ Loại sân</th>
+                <th>🕒 Khung giờ</th>
+                <th>💵 Giá (VNĐ)</th>
+            </tr>
+        </thead>
+        <tbody class="fw-bold">
+            <tr><td>Sân 7 người</td><td>06:00 - 17:30</td><td>500.000</td></tr>
+            <tr><td>Sân 7 người</td><td>17:30 - 19:00</td><td>800.000</td></tr>
+            <tr><td>Sân 7 người</td><td>19:00 - 20:30</td><td>700.000</td></tr>
+            <tr><td>Sân 7 người</td><td>20:30 - 22:00</td><td>600.000</td></tr>
+            <tr><td>Sân 7 người</td><td>22:00 - 23:30</td><td>500.000</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- Hướng dẫn đặt sân -->
+<section id="guide" class="container my-5">
+    <h2 class="text-center text-primary fw-bold mb-4">📌 Hướng dẫn đặt sân</h2>
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="p-4 bg-light rounded shadow">
+                <h5 class="fw-bold">Bước 1: Chọn sân</h5>
+                <p>🔍 Tìm kiếm sân với khung giờ phù hợp.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 bg-light rounded shadow">
+                <h5 class="fw-bold">Bước 2: Đặt sân</h5>
+                <p>📝 Xác nhận đặt sân và nhập thông tin.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 bg-light rounded shadow">
+                <h5 class="fw-bold">Bước 3: Thanh toán</h5>
+                <p>💳 Thanh toán và đặt cọc sân thành công.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Chính sách -->
+<section id="policy" class="bg-light py-5">
+    <div class="container text-center">
+        <h2 class="text-primary fw-bold mb-4">📜 Chính sách đặt cọc & hủy sân</h2>
+        <div class="row text-center g-4">
+            <div class="col-md-4">
+                <div class="p-4 bg-white shadow rounded">
+                    <h5 class="fw-bold">⏳ Thời gian đặt cọc</h5>
+                    <p>Thanh toán trong vòng 30 phút sau khi đặt sân.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white shadow rounded">
+                    <h5 class="fw-bold">❌ Chính sách hủy sân</h5>
+                    <p>Bạn có thể hủy sân trước khi đến giờ thi đấu.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white shadow rounded">
+                    <h5 class="fw-bold">💰 Hoàn tiền cọc</h5>
+                    <p>Hủy trước 3 ngày: hoàn 100% tiền cọc.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,53 @@
+﻿@model TTDN.Models.FieldSchedule
+
+@{
+    ViewData["Title"] = "Chỉnh sửa lịch sân";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-center text-primary my-4">Chỉnh sửa lịch sân</h2>
+
+<div class="container">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="ScheduleId" />
+
+        <div class="mb-3">
+            <label class="form-label">Sân</label>
+            <select asp-for="FieldId" class="form-control" required>
+                @foreach (var field in ViewBag.Fields)
+                {
+                    <option value="@field.FieldId" selected="@(Model.FieldId == field.FieldId ? "selected" : null)">@field.FieldName</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ngày đặt</label>
+            <input type="date" asp-for="BookingDate" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Giờ bắt đầu</label>
+            <input type="time" asp-for="StartTime" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Giờ kết thúc</label>
+            <input type="time" asp-for="EndTime" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Trạng thái</label>
+            <select asp-for="Status" class="form-control" required>
+                <option value="available" selected="@(Model.Status == "available" ? "selected" : null)">Còn trống</option>
+                <option value="booked" selected="@(Model.Status == "booked" ? "selected" : null)">Đã đặt</option>
+            </select>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+            <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+        </div>
+    </form>
+</div>
+

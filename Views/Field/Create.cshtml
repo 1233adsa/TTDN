@@ -1,0 +1,28 @@
+﻿@model TTDN.Models.Field
+
+@{
+    ViewData["Title"] = "Thêm sân mới";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-2xl font-bold mb-4">Thêm sân mới</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Tên sân</label>
+        <input type="text" class="form-control" asp-for="FieldName" required />
+        <span asp-validation-for="FieldName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Trạng thái</label>
+        <select class="form-control" asp-for="Status">
+            <option value="Active">Active</option>
+            <option value="Maintenance">Maintenance</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Thêm sân</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>

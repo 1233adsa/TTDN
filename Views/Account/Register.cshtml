@@ -1,0 +1,77 @@
+﻿@model TTDN.Models.Account
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+        <div class="text-center">
+            <h2 class="mb-4 text-success">Đăng ký tài khoản</h2>
+        </div>
+
+        <!-- Form đăng ký -->
+        <form method="post">
+            <div class="mb-3">
+                <label for="Username" class="form-label">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" id="Username" name="Username" value="@Model?.Username" class="form-control" required placeholder="Nhập tên đăng nhập">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="Password" class="form-label">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="Password" name="Password" class="form-control" required placeholder="Nhập mật khẩu">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Điện thoại</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                    <input type="text" id="phone" name="phone" class="form-control" required placeholder="Nhập số điện thoại">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="Email" class="form-label">Email</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    <input type="email" id="Email" name="Email" class="form-control" required placeholder="Nhập email">
+                </div>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success btn-lg">Đăng ký</button>
+            </div>
+        </form>
+
+        <!-- Thông báo thành công -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success mt-3">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <!-- Thông báo lỗi -->
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger mt-3">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <!-- Hiển thị lỗi từ ModelState -->
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div class="alert alert-danger mt-2">@error.ErrorMessage</div>
+        }
+
+        <div class="text-center mt-3">
+            <p>Đã có tài khoản? <a href="@Url.Action("Login", "Account")" class="text-success fw-bold">Đăng nhập ngay</a></p>
+        </div>
+    </div>
+</div>

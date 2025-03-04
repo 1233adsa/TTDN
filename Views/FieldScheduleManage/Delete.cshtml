@@ -1,0 +1,57 @@
+﻿@model TTDN.Models.FieldSchedule
+
+@{
+    ViewData["Title"] = "Xóa lịch sân";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-center text-danger my-4">Xóa lịch sân</h2>
+
+<div class="container">
+    <div class="alert alert-warning">
+        <h4>Bạn có chắc chắn muốn xóa lịch sân này không?</h4>
+        <p class="text-danger">Lưu ý: Hành động này không thể hoàn tác.</p>
+    </div>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Sân</th>
+            <td>@Model.Field.FieldName</td>
+        </tr>
+        <tr>
+            <th>Ngày đặt</th>
+            <td>@Model.BookingDate.ToString("dd/MM/yyyy")</td>
+        </tr>
+        <tr>
+            <th>Giờ bắt đầu</th>
+            <td>@Model.StartTime</td>
+        </tr>
+        <tr>
+            <th>Giờ kết thúc</th>
+            <td>@Model.EndTime</td>
+        </tr>
+        <tr>
+            <th>Trạng thái</th>
+            <td>
+                @if (Model.Status == "available")
+                {
+                    <span class="badge bg-success">Còn trống</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Đã đặt</span>
+                }
+            </td>
+        </tr>
+    </table>
+
+    <div class="text-center">
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="ScheduleId" />
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Xóa
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+        </form>
+    </div>
+</div>

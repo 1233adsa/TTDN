@@ -1,0 +1,39 @@
+﻿@model List<TTDN.Models.Price>
+
+@{
+    ViewData["Title"] = "Quản lý giá sân";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="text-center font-bold text-primary my-4">Quản lý giá sân</h2>
+
+<!-- Hiển thị thông báo -->
+<div id="alertMessage" class="alert d-none"></div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên sân</th>
+            <th>Giờ bắt đầu</th>
+            <th>Giờ kết thúc</th>
+            <th>Giá</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var price in Model)
+
+        {
+            <tr>
+                <td>@price.Field?.FieldName</td>
+                <td>@price.StartTime</td>
+                <td>@price.EndTime</td>
+                <td>@price.Price1.ToString("N0") đồng</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@price.PriceId" class="btn btn-warning">Sửa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

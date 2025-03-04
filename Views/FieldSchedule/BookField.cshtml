@@ -1,0 +1,70 @@
+﻿@model TTDN.Models.Booking
+
+@{
+    ViewData["Title"] = "Thông tin đặt sân";
+}
+
+<h2 class="text-center text-primary my-4">🏟️ Thông tin đặt sân</h2>
+
+<div class="container p-4 border rounded shadow-sm bg-light">
+    <h4 class="text-secondary">📋 Chi tiết đặt sân</h4>
+    <table class="table table-bordered">
+        <tr>
+            <th>Sân</th>
+            <td>@Model.Field?.FieldName</td>
+        </tr>
+        <tr>
+            <th>Ngày đặt</th>
+            <td>@Model.BookingDate.ToString("dd/MM/yyyy")</td>
+        </tr>
+        <tr>
+            <th>Giờ bắt đầu</th>
+            <td>@Model.StartTime</td>
+        </tr>
+        <tr>
+            <th>Giờ kết thúc</th>
+            <td>@Model.EndTime</td>
+        </tr>
+        <tr>
+            <th>Giá</th>
+            <td class="text-success fw-bold">@Model.TotalPrice.ToString("N0") đồng</td>
+        </tr>
+        <tr>
+            <th>Tiền đặt cọc</th>
+            <td class="text-warning fw-bold">@Model.DepositAmount.ToString("N0") đồng</td>
+        </tr>
+        <tr>
+            <th>Hạn chót thanh toán</th>
+            <td class="text-danger fw-bold">@Model.DueTime.ToString("dd/MM/yyyy HH:mm")</td>
+        </tr>
+        <tr>
+            <th>Trạng thái</th>
+            <td>
+                @if (Model.Status == "pending")
+                {
+                    <span class="badge bg-warning">⏳ Chờ thanh toán</span>
+                }
+                else
+                {
+                    <span class="badge bg-success">✅ Đã xác nhận</span>
+                }
+            </td>
+        </tr>
+    </table>
+
+    <!-- Thông báo chuyển khoản -->
+    @if (Model.Status == "pending")
+    {
+        <div class="alert alert-warning text-center font-weight-bold">
+            📢 Vui lòng chuyển khoản đặt cọc vào STK: <strong>012311207888</strong>
+            (MB Bank - <strong>Nguyen Van Thang</strong>) trước <span class="text-danger">@Model.DueTime.ToString("dd/MM/yyyy HH:mm")</span>
+            để xác nhận đặt sân thành công! ⏳
+        </div>
+    }
+
+    <div class="text-center mt-4">
+        <a asp-action="Index" class="btn btn-primary px-4">
+            <i class="fas fa-arrow-left"></i> Quay lại danh sách
+        </a>
+    </div>
+</div>
